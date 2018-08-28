@@ -1,9 +1,10 @@
+import { EmployeeService } from './employee.service';
 import { Employee } from './../models/employee.model';
 import { Department } from './../models/department.model';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-
+import { Router }from '@angular/router';
 
 @Component({
   selector: 'app-create-employee',
@@ -31,17 +32,20 @@ export class CreateEmployeeComponent implements OnInit {
     { id: 3, name: 'IT' },
     { id: 4, name: 'Payroll' }
   ];
-  constructor() { }
-
-  ngOnInit() {
-    this.datePickerConfig = Object.assign({},{
+  constructor(private _employService:EmployeeService,
+              private _router:Router) {
+      this.datePickerConfig = Object.assign({},{
       containerClass:'theme-dark-blue',
       showWeekNumbers:false,
       dateInputFormat:'DD/MM/YYYY'
     })
+               }
+
+  ngOnInit() {
   }
-  saveEmployee(empForm:NgForm):void{
-    console.log(empForm.value)
+  saveEmployee():void{
+    this._employService.save(this.employee);
+    this._router.navigate(['list']);
   }
   togglePhotoPreview(){
     this.previewPhoto = !this.previewPhoto;
